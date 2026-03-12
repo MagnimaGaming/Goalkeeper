@@ -11,52 +11,33 @@ public class PlayerMovement : MonoBehaviour
     int totalLanes=5;
     float targetX=0f;
     Rigidbody Rb;
-    private Animator animator;
-
+    
     void Start()
     {
         Rb=GetComponent<Rigidbody>();
         Rb.freezeRotation=true;
         currentLane=totalLanes/2;
-        animator = GetComponent<Animator>();
+
     }
 
-  void Update()
-  {
-    if (Input.GetKeyDown(KeyCode.LeftArrow))
+    
+    void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             currentLane--;
-            animator.SetTrigger("Move");
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             currentLane++;
-            animator.SetTrigger("Move");
         }
         currentLane=Mathf.Clamp(currentLane,0,totalLanes-1);
         targetX = (currentLane-(totalLanes/2))*laneDistance;
         
     }
-    else if (Input.GetKeyDown(KeyCode.RightArrow))
+    void FixedUpdate()
     {
-      currentLane++;
+        Vector3 targetPosition=new Vector3(targetX,Rb.position.y,Rb.position.z);
+        Rb.MovePosition(Vector3.MoveTowards(Rb.position,targetPosition,speed*Time.fixedDeltaTime));
     }
-    currentLane = Mathf.Clamp(currentLane, 0, totalLanes - 1);
-    targetX = (currentLane - (totalLanes / 2)) * laneDistance;
-
-  }
-  void FixedUpdate()
-  {
-    Vector3 targetPosition = new Vector3(targetX, Rb.position.y, Rb.position.z);
-    Rb.MovePosition(Vector3.MoveTowards(Rb.position, targetPosition, speed * Time.fixedDeltaTime));
-  }
-  void OnCollisionEnter(Collision collision)
-  {
-    if (collision.gameObject.tag == "Ball")
-    {
-      uiManager.ScoreIncrease();
-    }
-  }
 }
