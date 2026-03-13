@@ -158,6 +158,7 @@ public class UIManager : MonoBehaviour
     SkipMenu = true;
     SkipLevelPanel = true;
     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    LivesPannel.SetActive(true);
   }
 
   IEnumerator ResumeCountdown()
@@ -165,9 +166,9 @@ public class UIManager : MonoBehaviour
     PausePannel.SetActive(false);
     CountdownPannel.SetActive(true);
 
-    player.enabled = false;
-    Time.timeScale = 1f;
 
+    Time.timeScale = 1f;
+    player.enabled = false;
     CountdownText.text = "3";
     yield return new WaitForSeconds(1f);
 

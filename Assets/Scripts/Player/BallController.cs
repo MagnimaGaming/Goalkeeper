@@ -4,48 +4,48 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    [SerializeField]private float forwardForce=10f;
-    [SerializeField]private float upwardForce=7f;
-    [SerializeField] private float StartingZPos=-2f;
-    float[] lanes={-2f,-1f,0f,1f,2f};
-    Rigidbody Rb;
-    bool isResetting=false;
-    Vector3 startPosition;
+  [SerializeField] private float forwardForce = 10f;
+  [SerializeField] private float upwardForce = 7f;
+  [SerializeField] private float StartingZPos = -2f;
+  float[] lanes = { -2f, -1f, 0f, 1f, 2f };
+  Rigidbody Rb;
+  bool isResetting = false;
+  Vector3 startPosition;
 
 
-    
-    void Start()
+
+  void Start()
+  {
+    Rb = GetComponent<Rigidbody>();
+    startPosition = new Vector3(0, transform.position.y, StartingZPos);
+    transform.position = startPosition;
+    Shoot();
+  }
+  void Shoot()
+  {
+    float laneX = lanes[Random.Range(0, lanes.Length)];
+    Vector3 direction = new Vector3(laneX - transform.position.x, 0, -8f).normalized;
+    Rb.AddForce(direction * forwardForce, ForceMode.Impulse);
+    Rb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
+  }
+
+  void OnCollisionEnter(Collision collision)
+  {
+    if (isResetting) return;
+    if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Goal")
     {
-        Rb=GetComponent<Rigidbody>();
-        startPosition=new Vector3(0,transform.position.y,StartingZPos);
-        transform.position=startPosition;
-        Shoot();
-    }
-    void Shoot()
-    {
-        float laneX=lanes[Random.Range(0,lanes.Length)];
-        Vector3 direction=new Vector3(laneX-transform.position.x,0,-8f).normalized;
-        Rb.AddForce(direction*forwardForce,ForceMode.Impulse);
-        Rb.AddForce(Vector3.up*upwardForce,ForceMode.Impulse);
+      isResetting = true;
+      StartCoroutine(ResetBall());
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if(isResetting) return;
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Goal")
-        {
-            isResetting=true;
-            StartCoroutine(ResetBall());
-        }
-        
-    }
-    IEnumerator ResetBall()
-    {
-        yield return new WaitForSeconds(1f);
-        Rb.velocity = Vector3.zero;
-        Rb.angularVelocity = Vector3.zero;
-        transform.position = startPosition;
-        Shoot();
-        isResetting=false;
-    }
+  }
+  IEnumerator ResetBall()
+  {
+    yield return new WaitForSeconds(1f);
+    Rb.velocity = Vector3.zero;
+    Rb.angularVelocity = Vector3.zero;
+    transform.position = startPosition;
+    Shoot();
+    isResetting = false;
+  }
 }
