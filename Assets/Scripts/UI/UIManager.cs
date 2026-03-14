@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
   public GameObject LevelsPannel;
   public PlayerMovement player;
   public BallController ballController;
+  public SettingsManager settingsManager;
 
   [SerializeField] GameObject Ball1;
   [SerializeField] GameObject Ball2;
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour
 
   void Start()
   {
+    settingsManager.volumeSlider.value = 1;
     Time.timeScale = 0f;
     score.text = "Points: 0";
 
