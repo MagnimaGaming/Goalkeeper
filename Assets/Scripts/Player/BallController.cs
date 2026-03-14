@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-  [SerializeField] private float forwardForce = 10f;
+  [SerializeField] private float forwardForce = 15f;
   [SerializeField] private float upwardForce = 7f;
   [SerializeField] private float StartingZPos = -2f;
   [SerializeField] Audiomanager audiomanager;
+  [SerializeField]
   float[] lanes = { -2f, -1f, 0f, 1f, 2f };
   Rigidbody Rb;
   bool isResetting = false;
@@ -20,15 +21,21 @@ public class BallController : MonoBehaviour
     Rb = GetComponent<Rigidbody>();
     startPosition = new Vector3(0, transform.position.y, StartingZPos);
     transform.position = startPosition;
-    Shoot();
+    StartCoroutine(BallWait());
   }
-  void Shoot()
+  
+    void Shoot()
   {
     float laneX = lanes[Random.Range(0, lanes.Length)];
-    Vector3 direction = new Vector3(laneX - transform.position.x, 0, -8f).normalized;
+    Vector3 direction = new Vector3(laneX - transform.position.x, 0, -9f).normalized;
     Rb.AddForce(direction * forwardForce, ForceMode.Impulse);
     Rb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
     audiomanager.PlayKick();
+  }
+  IEnumerator BallWait()
+  {
+    yield return new WaitForSeconds(1.5f);
+    Shoot();
   }
 
   void OnCollisionEnter(Collision collision)
@@ -47,7 +54,7 @@ public class BallController : MonoBehaviour
     Rb.velocity = Vector3.zero;
     Rb.angularVelocity = Vector3.zero;
     transform.position = startPosition;
-    Shoot();
+    StartCoroutine(BallWait());
     isResetting = false;
   }
 }
