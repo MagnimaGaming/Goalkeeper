@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
   [SerializeField] float speed = 5f;
   [SerializeField] float laneDistance = 1f;
   [SerializeField] UIManager uiManager;
+  [SerializeField] Audiomanager audioManager;
   int currentLane = 0;
   int totalLanes = 5;
   float targetX = 0f;
@@ -47,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     if (collision.gameObject.tag == "Ball")
     {
       uiManager.ScoreIncrease();
+      audioManager.PlaySave();
     }
   }
 }

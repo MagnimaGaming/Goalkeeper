@@ -7,6 +7,7 @@ public class BallController : MonoBehaviour
   [SerializeField] private float forwardForce = 10f;
   [SerializeField] private float upwardForce = 7f;
   [SerializeField] private float StartingZPos = -2f;
+  [SerializeField] Audiomanager audiomanager;
   float[] lanes = { -2f, -1f, 0f, 1f, 2f };
   Rigidbody Rb;
   bool isResetting = false;
@@ -27,6 +28,7 @@ public class BallController : MonoBehaviour
     Vector3 direction = new Vector3(laneX - transform.position.x, 0, -8f).normalized;
     Rb.AddForce(direction * forwardForce, ForceMode.Impulse);
     Rb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
+    audiomanager.PlayKick();
   }
 
   void OnCollisionEnter(Collision collision)

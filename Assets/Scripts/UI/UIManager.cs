@@ -12,8 +12,8 @@ public class UIManager : MonoBehaviour
   [SerializeField] GameObject CountdownPannel;
   [SerializeField] TMP_Text CountdownText;
   [SerializeField] GameObject SettingsPannel;
-  [SerializeField] GameObject PauseIconPannel;
   [SerializeField] private TextMeshProUGUI score;
+  [SerializeField] TextMeshProUGUI finalScoreText;
 
   public GameObject LevelsPannel;
   public PlayerMovement player;
@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
   [SerializeField] GameObject Ball1;
   [SerializeField] GameObject Ball2;
   [SerializeField] GameObject Ball3;
+  [SerializeField] Audiomanager audiomanager;
 
   int goals = 3;
   int points = 0;
@@ -77,6 +78,7 @@ public class UIManager : MonoBehaviour
     else if (goals == 0)
     {
       Ball1.SetActive(false);
+      audiomanager.PlayGameOver();
       GameOver();
     }
   }
@@ -85,6 +87,7 @@ public class UIManager : MonoBehaviour
   {
     Debug.Log("Game Over");
     Time.timeScale = 0f;
+    finalScoreText.text = " POINTS: " + points;
     GameOverPannel.SetActive(true);
   }
 
@@ -93,7 +96,6 @@ public class UIManager : MonoBehaviour
     PlayerPrefs.SetInt("Level", 0);
     LevelsPannel.SetActive(false);
     LivesPannel.SetActive(true);
-    PauseIconPannel.SetActive(true);
     Time.timeScale = 1f;
   }
 
@@ -128,8 +130,10 @@ public class UIManager : MonoBehaviour
   {
     Debug.Log("Pause Clicked");
     PausePannel.SetActive(true);
-    ballController.enabled = false;
     Time.timeScale = 0f;
+    player.enabled = false;
+    ballController.enabled = false;
+
   }
 
   public void ResumeButton()
@@ -140,6 +144,8 @@ public class UIManager : MonoBehaviour
   public void HomeButton()
   {
     PausePannel.SetActive(false);
+    SettingsPannel.SetActive(false);
+    GameOverPannel.SetActive(false);
     MainMenuPannel.SetActive(true);
   }
 
@@ -155,6 +161,7 @@ public class UIManager : MonoBehaviour
 
   public void Restart()
   {
+    points = 0;
     SkipMenu = true;
     SkipLevelPanel = true;
     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -165,20 +172,24 @@ public class UIManager : MonoBehaviour
   {
     PausePannel.SetActive(false);
     CountdownPannel.SetActive(true);
-
-
-    Time.timeScale = 1f;
+    Time.timeScale = 0f;
     player.enabled = false;
+    ballController.enabled = false;
+
+
     CountdownText.text = "3";
-    yield return new WaitForSeconds(1f);
+    yield return new WaitForSecondsRealtime(1f);
 
     CountdownText.text = "2";
-    yield return new WaitForSeconds(1f);
+    yield return new WaitForSecondsRealtime(1f);
 
     CountdownText.text = "1";
-    yield return new WaitForSeconds(1f);
+    yield return new WaitForSecondsRealtime(1f);
 
     CountdownPannel.SetActive(false);
+    Time.timeScale = 1f;
+    ballController.enabled = true;
     player.enabled = true;
+
   }
 }
