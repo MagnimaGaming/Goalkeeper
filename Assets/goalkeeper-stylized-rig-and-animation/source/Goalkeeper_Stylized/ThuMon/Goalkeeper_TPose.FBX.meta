@@ -8,8 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Goalkeeper1
-    second: {fileID: -9123309536693314975, guid: c8153b15894bedc4f9710187c26e844f,
-      type: 3}
+    second: {fileID: 2100000, guid: b88f0d9ae86aeb64d83125f9f0b0f321, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

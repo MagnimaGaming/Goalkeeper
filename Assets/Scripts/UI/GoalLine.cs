@@ -6,6 +6,7 @@ public class GoalLine : MonoBehaviour
 {
   [SerializeField] private UIManager uiManager;
   public Audiomanager audioManager;
+  public BallController ballController;
 
   void OnTriggerEnter(Collider other)
   {
@@ -13,6 +14,8 @@ public class GoalLine : MonoBehaviour
     {
       uiManager.Losegoal();
       audioManager.PlayGoal();
+      ballController.isResetting=true;
+      StartCoroutine(ballController.ResetBall());
     }
   }
 }

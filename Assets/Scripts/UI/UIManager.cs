@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
   [SerializeField] GameObject Ball1;
   [SerializeField] GameObject Ball2;
   [SerializeField] GameObject Ball3;
+  public GameObject Kicker;
   [SerializeField] Audiomanager audiomanager;
 
   int goals = 3;
@@ -83,16 +84,16 @@ public class UIManager : MonoBehaviour
     else if (goals == 0)
     {
       Ball1.SetActive(false);
-
-
+      ballController.enabled = false;
+      player.enabled = false;
+      Kicker.SetActive(false);
       StartCoroutine(HoldGame());
     }
   }
 
   private IEnumerator HoldGame()
   {
-    ballController.enabled = false;
-    player.enabled = false;
+    
     yield return new WaitForSeconds(3);
 
     audiomanager.PlayGameOver();

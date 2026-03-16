@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-  [SerializeField] private float forwardForce = 15f;
+  [SerializeField] private float forwardForce = 18f;
   [SerializeField] private float upwardForce = 10f;
   [SerializeField] private float StartingZPos = 78f;
   Vector3 KickerPosition;
   [SerializeField]private GameObject Kicker;
   [SerializeField] Audiomanager audiomanager;
-  [SerializeField] Animator BallKickAnimator;
+  [SerializeField] public  Animator BallKickAnimator;
   float[] lanes = { -8f, -4f, 0f, 4f, 8f };
   Rigidbody Rb;
-  bool isResetting = false;
+   public bool isResetting = false;
   Vector3 startPosition;
 
 
@@ -46,14 +46,14 @@ public class BallController : MonoBehaviour
   void OnCollisionEnter(Collision collision)
   {
     if (isResetting) return;
-    if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Goal")
+    if (collision.gameObject.tag == "Player")
     {
       isResetting = true;
       StartCoroutine(ResetBall());
     }
 
   }
-  IEnumerator ResetBall()
+  public IEnumerator ResetBall()
   {
     
     yield return new WaitForSeconds(1f);
